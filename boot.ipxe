@@ -7,11 +7,17 @@ echo Downloading boot files from GitHub...
 echo This may take several minutes...
 echo ===============================================
 
-# Load wimboot (Windows Image Boot loader)
+# Load wimboot from GitHub
 echo Loading wimboot...
-kernel https://drive.google.com/uc?export=download&id=1-M3mbJb3McTCBOY-XghQMuTGdcjHGz1W rawbcd
+kernel https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/wimboot
 
-# Load Windows PE boot environment (try simple approach first)
+# Load all required boot files from GitHub
+echo Loading BCD...
+initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/bcd BCD
+
+echo Loading boot.sdi...
+initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/boot.sdi boot.sdi
+
 echo Loading Windows PE (boot.wim)...
 initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/boot.wim boot.wim
 
