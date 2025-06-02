@@ -13,7 +13,7 @@ kernel https://drive.google.com/uc?export=download&id=1-M3mbJb3McTCBOY-XghQMuTGd
 
 # Load Windows PE boot environment  
 echo Loading Windows PE (boot.wim)...
-initrd https://drive.google.com/uc?export=download&id=1-OuRBk73teX5oOOUnbJPplgV_4c5itOF boot.wim
+initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/boot.wim boot.wim
 
 echo ===============================================
 echo Starting Windows PE environment...
