@@ -1,0 +1,23 @@
+#!ipxe
+
+echo ===============================================
+echo    Windows Server 2025 Network Installation  
+echo ===============================================
+echo Downloading boot files from Google Drive...
+echo This may take several minutes...
+echo ===============================================
+
+# Load wimboot (Windows Image Boot loader)
+echo Loading wimboot...
+kernel https://drive.google.com/uc?export=download&id=1-M3mbJb3McTCBOY-XghQMuTGdcjHGz1W
+
+# Load Windows PE boot environment  
+echo Loading Windows PE (boot.wim)...
+initrd https://drive.google.com/uc?export=download&id=1-OuRBk73teX5oOOUnbJPplgV_4c5itOF boot.wim
+
+echo ===============================================
+echo Starting Windows PE environment...
+echo ===============================================
+
+# Boot into Windows PE
+boot
