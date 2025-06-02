@@ -3,15 +3,15 @@
 echo ===============================================
 echo    Windows Server 2025 Network Installation  
 echo ===============================================
-echo Downloading boot files from Google Drive...
+echo Downloading boot files from GitHub...
 echo This may take several minutes...
 echo ===============================================
 
 # Load wimboot (Windows Image Boot loader)
 echo Loading wimboot...
-kernel https://drive.google.com/uc?export=download&id=1-M3mbJb3McTCBOY-XghQMuTGdcjHGz1W
+kernel https://drive.google.com/uc?export=download&id=1-M3mbJb3McTCBOY-XghQMuTGdcjHGz1W rawbcd
 
-# Load Windows PE boot environment  
+# Load Windows PE boot environment (try simple approach first)
 echo Loading Windows PE (boot.wim)...
 initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/boot.wim boot.wim
 
