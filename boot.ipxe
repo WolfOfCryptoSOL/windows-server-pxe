@@ -1,29 +1,36 @@
 #!ipxe
 
-echo ===============================================
-echo    Windows Server 2025 Network Installation  
-echo ===============================================
-echo Downloading boot files from GitHub...
-echo This may take several minutes...
-echo ===============================================
+echo ========================================
+echo DEBUG: iPXE Script Started Successfully
+echo ========================================
+sleep 3
 
-# Load wimboot from GitHub
-echo Loading wimboot...
-kernel https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/wimboot
+echo Testing wimboot download...
+kernel https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/wimboot || goto failed
+echo Wimboot loaded successfully!
+sleep 2
 
-# Load all required boot files from GitHub
-echo Loading BCD...
-initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/bcd BCD
+echo Testing BCD download...
+initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/BCD BCD || goto failed
+echo BCD loaded successfully!
+sleep 2
 
-echo Loading boot.sdi...
-initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/boot.sdi boot.sdi
+echo Testing boot.sdi download...
+initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/boot.sdi boot.sdi || goto failed
+echo boot.sdi loaded successfully!
+sleep 2
 
-echo Loading Windows PE (boot.wim)...
-initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/boot.wim boot.wim
+echo Testing boot.wim download...
+initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/boot.wim boot.wim || goto failed
+echo boot.wim loaded successfully!
+sleep 2
 
-echo ===============================================
-echo Starting Windows PE environment...
-echo ===============================================
-
-# Boot into Windows PE
+echo All files loaded! Attempting boot...
 boot
+
+:failed
+echo ========================================
+echo ERROR: Download failed at above step
+echo ========================================
+sleep 10
+shell
