@@ -1,36 +1,26 @@
 #!ipxe
 
 echo ========================================
-echo DEBUG: iPXE Script Started Successfully
+echo TERASWITCH DATACENTER iPXE TEST
 echo ========================================
 sleep 3
 
-echo Testing wimboot download...
-kernel https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/wimboot || goto failed
-echo Wimboot loaded successfully!
-sleep 2
+echo Network configuration:
+config
+sleep 5
 
-echo Testing BCD download...
-initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/BCD BCD || goto failed
-echo BCD loaded successfully!
-sleep 2
+echo Testing GitHub connectivity...
+imgfetch https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/wimboot test-wimboot || goto network_failed
+echo SUCCESS: GitHub is reachable!
+sleep 3
 
-echo Testing boot.sdi download...
-initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/boot.sdi boot.sdi || goto failed
-echo boot.sdi loaded successfully!
-sleep 2
-
-echo Testing boot.wim download...
-initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/boot.wim boot.wim || goto failed
-echo boot.wim loaded successfully!
-sleep 2
-
-echo All files loaded! Attempting boot...
+echo Loading Windows PE...
+kernel https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/wimboot
+initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/winpe.wim winpe.wim
 boot
 
-:failed
-echo ========================================
-echo ERROR: Download failed at above step
-echo ========================================
+:network_failed
+echo NETWORK TEST FAILED - Cannot reach GitHub
+echo Datacenter might be blocking external downloads
 sleep 10
 shell
