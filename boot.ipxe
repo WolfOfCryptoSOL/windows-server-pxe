@@ -1,26 +1,35 @@
 #!ipxe
-
 echo ========================================
-echo TERASWITCH DATACENTER iPXE TEST
+echo TERASWITCH DATACENTER iPXE DIAGNOSTIC
 echo ========================================
 sleep 3
-
 echo Network configuration:
 config
 sleep 5
-
-echo Testing GitHub connectivity...
-imgfetch https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/wimboot test-wimboot || goto network_failed
-echo SUCCESS: GitHub is reachable!
-sleep 3
-
-echo Loading Windows PE...
+echo Testing basic HTTP connectivity...
+imgfetch http://boot.netboot.xyz/ipxe/netboot.xyz.lkrn test-http || goto test_github_https
+echo SUCCESS: HTTP works! Trying netboot.xyz fallback...
+chain --autofree http://boot.netboot.xyz || goto test_github_https
+:test_github_https
+echo Testing GitHub HTTPS (likely to fail)...
+imgfetch https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/wimboot || goto https_failed
+echo SUCCESS: HTTPS works! Loading Windows PE...
 kernel https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/wimboot
 initrd https://github.com/WolfOfCryptoSOL/windows-server-pxe/releases/download/v1.0/winpe.wim winpe.wim
 boot
-
+:https_failed
+echo ========================================
+echo DIAGNOSIS: TERASWITCH iPXE LACKS HTTPS
+echo ========================================
+echo Your script fails because:
+echo 1. Teraswitch iPXE build has no HTTPS support
+echo 2. GitHub releases require HTTPS
+echo 3. Need HTTP-accessible file hosting
+echo ========================================
+sleep 10
+shell
 :network_failed
-echo NETWORK TEST FAILED - Cannot reach GitHub
-echo Datacenter might be blocking external downloads
+echo NETWORK COMPLETELY BLOCKED
+echo Frankfurt datacenter blocks external connections
 sleep 10
 shell
